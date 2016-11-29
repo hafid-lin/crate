@@ -22,7 +22,12 @@
 
 package io.crate.integrationtests;
 
+import com.carrotsearch.randomizedtesting.annotations.Repeat;
+import com.carrotsearch.randomizedtesting.annotations.Seed;
+import com.carrotsearch.randomizedtesting.annotations.TimeoutSuite;
 import io.crate.testing.UseJdbc;
+import org.apache.lucene.util.TimeUnits;
+import org.elasticsearch.test.junit.annotations.TestLogging;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,6 +35,8 @@ import static io.crate.testing.TestingHelpers.printedTable;
 import static org.hamcrest.core.Is.is;
 
 @UseJdbc
+@Seed("7F98C30CDE8B1E09")
+@TimeoutSuite(millis = 60 * TimeUnits.MINUTE)
 public class OuterJoinIntegrationTest extends SQLTransportIntegrationTest {
 
     @Before
@@ -68,6 +75,8 @@ public class OuterJoinIntegrationTest extends SQLTransportIntegrationTest {
     }
 
     @Test
+    @TestLogging("io.crate:TRACE")
+    @Repeat(iterations = 5000)
     public void test3TableLeftOuterJoin() throws Exception {
         execute(
             "select professions.name, employees.name, offices.name from" +
