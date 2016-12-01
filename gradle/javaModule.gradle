@@ -36,12 +36,16 @@ jmh {
 }
 
 test {
+    // There is a log4j.xml for tests which uses ${logging.level}
+    // but this property has no default so it is set here.
+    systemProperty 'logging.level', 'INFO'
+
+
     // by default `-D` arguments are "catched" in the gradle process 
     // and not passed-through to the test process.
     // this enables test options like '-Dtests.iters=20'
-
     System.properties.each { k, v ->
-        if (k.startsWith('tests.')) {
+        if (k.startsWith('tests.') || k.startsWith('logging.')) {
             systemProperty k, v
         }
     }
