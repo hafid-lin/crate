@@ -43,8 +43,9 @@ statement
 //    | CREATE (OR REPLACE)? VIEW qualifiedName AS query                 #createView
     | EXPLAIN ANALYZE?
         ('(' explainOption (',' explainOption)* ')')? statement        #explain
-    | KILL (ALL | parameterOrLiteral)                                  #killStatement
+    | KILL (ALL | parameterOrLiteral)                                  #kill
     | SET (SESSION | LOCAL)? setAssignment                             #set
+    | RESET GLOBAL valueExpression ( ',' valueExpression)*             #resetGlobal
     | UPDATE aliasedRelation SET assignment (',' assignment)*
         (WHERE where=booleanExpression)?                               #update
     ;
@@ -609,6 +610,7 @@ MAP: 'MAP';
 SET: 'SET';
 RESET: 'RESET';
 SESSION: 'SESSION';
+GLOBAL: 'GLOBAL';
 LOCAL: 'LOCAL';
 DATA: 'DATA';
 START: 'START';

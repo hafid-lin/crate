@@ -141,7 +141,7 @@ class AstBuilder extends SqlBaseBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitKillStatement(SqlBaseParser.KillStatementContext context) {
+    public Node visitKill(SqlBaseParser.KillContext context) {
         if (context.ALL() != null) {
             return new KillStatement();
         }
@@ -392,17 +392,12 @@ class AstBuilder extends SqlBaseBaseVisitor<Node> {
         );
     }
 
-//    @Override
-//    public Node visitSetSession(SqlBaseParser.SetSessionContext context) {
-//        return new SetSession(getLocation(context), getQualifiedName(context.qualifiedName()), (Expression) visit(context.expression()));
-//    }
-//
-//    @Override
-//    public Node visitResetSession(SqlBaseParser.ResetSessionContext context) {
-//        return new ResetSession(getLocation(context), getQualifiedName(context.qualifiedName()));
-//    }
-//
-//    // ***************** boolean expressions ******************
+    @Override
+    public Node visitResetGlobal(SqlBaseParser.ResetGlobalContext context) {
+        return new ResetStatement(visit(context.valueExpression(), Expression.class));
+    }
+
+    // ***************** boolean expressions ******************
 
     @Override
     public Node visitLogicalNot(SqlBaseParser.LogicalNotContext context) {

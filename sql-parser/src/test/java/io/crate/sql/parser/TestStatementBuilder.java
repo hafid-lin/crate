@@ -183,6 +183,19 @@ public class TestStatementBuilder {
     }
 
     @Test
+    public void testSetGlobal() throws Exception {
+        printStatement("set global sys.cluster['some_settings'] = '1'");
+        printStatement("set global sys.cluster['some_settings'] = '1', other_setting = 2");
+        printStatement("set global transient sys.cluster['some_settings'] = '1'");
+        printStatement("set global persistent sys.cluster['some_settings'] = '1'");
+    }
+
+    @Test
+    public void testResetGlobalStmtBuilder() {
+        printStatement("reset global some_setting['nested'], other_setting");
+    }
+
+    @Test
     public void testStatementBuilder() throws Exception {
         printStatement("select * from foo");
 
@@ -485,18 +498,6 @@ public class TestStatementBuilder {
         printStatement("insert into foo (wealth, name) (select sum(money), name from bar group by name)");
         printStatement("insert into foo (select sum(money), name from bar group by name)");
     }
-
-    @Test
-    public void testSetGlobal() throws Exception {
-        printStatement("set global sys.cluster['some_settings'] = '1'");
-        printStatement("set global sys.cluster['some_settings'] = '1', other_setting = 2");
-        printStatement("set global transient sys.cluster['some_settings'] = '1'");
-        printStatement("set global persistent sys.cluster['some_settings'] = '1'");
-
-        printStatement("reset global some_setting['nested'], other_setting");
-    }
-
-
 
     @Test
     public void testParameterExpressionLimitOffset() throws Exception {
